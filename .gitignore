@@ -1,0 +1,13 @@
+build
+pkg
+build.bat
+run.bat
+run_release.bat
+clean.bat
+work
+.vscode
+.ds_store
+
+GPATH
+GRTAGS
+GTAGS
