@@ -58,10 +58,10 @@ int main(void) {
     track_init();
     track_module_console_register();
     track_module_file_register("telemetry.csv");
+    track_module_register(custom_event_handler, 0, 0);
     
     // run tools/echo in node.js to test HTTP endpoint
     track_module_http_register("http://127.0.0.1:8200/", my_http_payload);
-    track_module_register(custom_event_handler, 0, 0);
     
     // sample events
     {
