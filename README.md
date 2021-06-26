@@ -56,7 +56,7 @@ TRACK_MODULE_HTTP_PAYLOAD(my_http_payload) {
 
 int main(void) {
     track_init();
-    track_module_console_register();
+    track_module_console_register("demo log");
     track_module_file_register("telemetry.csv");
     track_module_register(custom_event_handler, 0, 0);
     
