@@ -19,8 +19,6 @@ macro(use_cxx11)
 endmacro(use_cxx11)
 
 macro(setup_curl)
-
-	if (NOT UNIX)
     # Prefer static libs over shared lib
     LIST(REVERSE CMAKE_FIND_LIBRARY_SUFFIXES)
     include(../cmake/CPM.cmake)
@@ -53,27 +51,24 @@ macro(setup_curl)
     endif()
 
     if (MSVC)
-    set(CURL_PLATFORM_OPTIONS "CMAKE_USE_SCHANNEL ON;CMAKE_USE_OPENSSL OFF;BUILD_SHARED_LIBS OFF")
+    set(CURL_PLATFORM_OPTIONS "CMAKE_USE_SCHANNEL ON;CMAKE_USE_OPENSSL OFF")
     elseif(APPLE)
-    set(CURL_PLATFORM_OPTIONS "CMAKE_USE_SECTRANSP OFF;CMAKE_USE_OPENSSL ON;BUILD_SHARED_LIBS OFF")
+    set(CURL_PLATFORM_OPTIONS "CMAKE_USE_SECTRANSP OFF;CMAKE_USE_OPENSSL ON")
     else()
-    set(CURL_PLATFORM_OPTIONS "CMAKE_USE_OPENSSL ON;BUILD_SHARED_LIBS ON")
+    set(CURL_PLATFORM_OPTIONS "CMAKE_USE_OPENSSL ON")
     endif()
 
     CPMAddPackage(
     NAME curl
-    VERSION 7.67.0
-    URL https://github.com/curl/curl/releases/download/curl-7_67_0/curl-7.67.0.tar.gz
+    VERSION 7.77.0
+    URL https://github.com/curl/curl/releases/download/curl-7_77_0/curl-7.77.0.tar.gz
     OPTIONS
+    "CURL_STATICLIB ON"
     "BUILD_CURL_EXE OFF"
+    "BUILD_SHARED_LIBS OFF"
     "BUILD_TESTING OFF"
     "WITH_STATIC_RT ON"
     "CMAKE_USE_LIBSSH2 OFF"
     ${CURL_PLATFORM_OPTIONS}
     )
-	set(CURL_LIBRARIES libcurl PARENT_SCOPE)
-	else()
-		find_package(CURL REQUIRED)
-		include_directories(${CURL_INCLUDE_DIR})
-	endif()
 endmacro()
