@@ -43,7 +43,7 @@ TRACK_EVENT_PROC(http__event_handler) {
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "Accept: application/json");
     headers = curl_slist_append(headers, "Content-Type: application/json; charset=utf-8");
-    int err = h->proc(TRACK_HTTP_MSGKIND_TRACK, e.text, u.text, t.text, data, (void**)&headers);
+    int err = h->proc(TRACK_HTTP_MSGKIND_TRACK, e.text, u.text, 0, t.text, data, (void**)&headers);
     
     zpl_file_close(&e.f);
     zpl_file_close(&u.f);
@@ -60,7 +60,7 @@ TRACK_IDENT_PROC(http__ident_handler) {
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "Accept: application/json");
     headers = curl_slist_append(headers, "Content-Type: application/json; charset=utf-8");
-    int err = h->proc(TRACK_HTTP_MSGKIND_IDENTIFY, "Identify", u.text, t.text, traits, (void**)&headers);
+    int err = h->proc(TRACK_HTTP_MSGKIND_IDENTIFY, "Identify", u.text, 0, t.text, traits, (void**)&headers);
     
     zpl_file_close(&u.f);
     zpl_file_close(&t.f);
@@ -77,7 +77,7 @@ TRACK_GROUP_PROC(http__group_handler) {
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "Accept: application/json");
     headers = curl_slist_append(headers, "Content-Type: application/json; charset=utf-8");
-    int err = h->proc(TRACK_HTTP_MSGKIND_GROUP, g.text, u.text, t.text, traits, (void**)&headers);
+    int err = h->proc(TRACK_HTTP_MSGKIND_GROUP, "Group", u.text, g.text, t.text, traits, (void**)&headers);
     
     zpl_file_close(&u.f);
     zpl_file_close(&g.f);

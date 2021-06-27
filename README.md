@@ -40,6 +40,7 @@ TRACK_EVENT_PROC(custom_event_handler) {
 TRACK_MODULE_HTTP_EVENT(my_http_event) {
     (void)raw_data;
     (void)msg_kind;
+    (void)group_id;
     static char buf[4096];
     snprintf(buf, 4096, "{ \"event\": \"%s\", \"user\": \"%s\", \"data\": \"%s\" }", event_id, user_id, data);
     return track_module_http_send("http://127.0.0.1:8200/", buf, headers);
