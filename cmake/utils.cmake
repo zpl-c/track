@@ -58,6 +58,7 @@ macro(setup_curl)
     set(CURL_PLATFORM_OPTIONS "CMAKE_USE_OPENSSL ON;BUILD_SHARED_LIBS ON")
     endif()
 
+	if (NOT UNIX)
     CPMAddPackage(
     NAME curl
     VERSION 7.67.0
@@ -68,5 +69,6 @@ macro(setup_curl)
     "WITH_STATIC_RT ON"
     "CMAKE_USE_LIBSSH2 OFF"
     ${CURL_PLATFORM_OPTIONS}
-    )
+    )	
+	endif()
 endmacro()
