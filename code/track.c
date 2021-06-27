@@ -86,8 +86,15 @@ int track_module_register(track_event_proc *event_proc, track_module_unregister_
     module.user_data = user_data;
     zpl_array_append(ctx.modules, module);
     
-    return (zpl_array_count(ctx.modules) - 1);
+    return (int)(zpl_array_count(ctx.modules) - 1);
 }
+
+void *track_module_get_udata(int module_id) {
+    ZPL_ASSERT_NOT_NULL(ctx.modules);
+    ZPL_ASSERT(module_id >= 0 && module_id < zpl_array_count(ctx.modules));
+    return ctx.modules[module_id].user_data;
+}
+
 int track_module_filter(int module_id, char const **allowlist, int allowlist_len, char const **denylist, int denylist_len) {
     // TODO(zaklaus): implement this feature
     (void)module_id;

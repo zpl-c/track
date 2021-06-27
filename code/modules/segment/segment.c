@@ -15,50 +15,80 @@
 #include "track_curl.h"
 
 #define TRACK_MODULE_SEGMENT_TRACK_API "https://api.segment.io/v1/track"
+#define TRACK_MODULE_SEGMENT_IDENTIFY_API "https://api.segment.io/v1/identify"
 #define TRACK_MODULE_SEGMENT_BUFSIZ 32768
 
 typedef struct {
     char const *write_key;
 } module_segment;
 
-TRACK_EVENT_PROC(segment__event_handler) {
-    ZPL_ASSERT_NOT_NULL(user_data);
-    int ret_code = 0;
-    track_escaped_string e = track_escape_string(event_id, "\"", '\\');
-    track_escaped_string u = track_escape_string(user_id, "\"", '\\');
-    
-    module_segment *h = (module_segment*)user_data;
+int track__module_segment_send(char const *url, char const *write_key, char const *req) {
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "Accept: application/json");
     headers = curl_slist_append(headers, "Content-Type: application/json; charset=utf-8");
     
+    // TODO: Improve
     static char auth_pass[512];
-    snprintf(auth_pass, 512, "%s:", h->write_key);
+    snprintf(auth_pass, 512, "%s:", write_key);
     zpl_u8 *auth_key = zpl_base64_encode(zpl_heap_allocator(), auth_pass, zpl_strlen(auth_pass));
     static char auth_token[512];
     snprintf(auth_token, 512, "Authorization: Basic %s", auth_key);
     zpl_mfree(auth_key);
-    
     headers = curl_slist_append(headers, auth_token);
     
-    static char buffer[TRACK_MODULE_SEGMENT_BUFSIZ];
-    snprintf(buffer, TRACK_MODULE_SEGMENT_BUFSIZ, "{\"userId\": \"%s\", \"event\": \"%s\",\"properties\": %s}", u.text, e.text, data);
-    
     CURL *curl = curl_easy_init();
-    curl_easy_setopt(curl, CURLOPT_URL, TRACK_MODULE_SEGMENT_TRACK_API);
-    curl_easy_setopt(curl, CURLOPT_COPYPOSTFIELDS, buffer);
+    curl_easy_setopt(curl, CURLOPT_URL, url);
+    curl_easy_setopt(curl, CURLOPT_COPYPOSTFIELDS, req);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     
     int res = track_curl_send_message(curl);
     
     if (res != CURLE_OK) {
         fprintf(stderr, "track_module_http curl error: %s\n", curl_easy_strerror(res));
-        ret_code = -1;
+        return -1;
     }
+    
+    return 0;
+}
+
+TRACK_EVENT_PROC(segment__event_handler) {
+    ZPL_ASSERT_NOT_NULL(user_data);
+    track_escaped_string e = track_escape_string(event_id, "\"", '\\');
+    track_escaped_string u = track_escape_string(user_id, "\"", '\\');
+    
+    module_segment *h = (module_segment*)user_data;
+    
+    static char buffer[TRACK_MODULE_SEGMENT_BUFSIZ];
+    snprintf(buffer, TRACK_MODULE_SEGMENT_BUFSIZ, "{\"userId\": \"%s\", \"event\": \"%s\",\"properties\": %s}", u.text, e.text, data);
     
     zpl_file_close(&e.f);
     zpl_file_close(&u.f);
-    return ret_code;
+    return track__module_segment_send(TRACK_MODULE_SEGMENT_TRACK_API, h->write_key, buffer);
+}
+
+int track_module_segment_identify(int module_id, char const *user_id, char const *traits) {
+#ifndef TRACK_DISABLE_VALIDATION
+    zpl_string json_data = zpl_string_make(zpl_heap_allocator(), traits);
+    zpl_json_object validated_data;
+    zpl_json_error err = zpl_json_parse(&validated_data, json_data, zpl_heap_allocator());
+    zpl_json_free(&validated_data);
+    zpl_string_free(json_data);
+    
+    if (err != ZPL_JSON_ERROR_NONE)
+        return -2;
+#endif
+    
+    void *user_data = track_module_get_udata(module_id);
+    ZPL_ASSERT_NOT_NULL(user_data);
+    track_escaped_string u = track_escape_string(user_id, "\"", '\\');
+    
+    module_segment *h = (module_segment*)user_data;
+    
+    static char buffer[TRACK_MODULE_SEGMENT_BUFSIZ];
+    snprintf(buffer, TRACK_MODULE_SEGMENT_BUFSIZ, "{\"userId\": \"%s\", \"traits\": %s}", u.text, traits);
+    
+    zpl_file_close(&u.f);
+    return track__module_segment_send(TRACK_MODULE_SEGMENT_IDENTIFY_API, h->write_key, buffer);
 }
 
 TRACK_MODULE_UNREGISTER_PROC(segment__unregister_handler) {

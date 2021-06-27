@@ -91,5 +91,7 @@ int track_event(char const *event_id, char const *user_id, char const *data);
 //~ Module registration methods
 int track_module_register(track_event_proc *event_proc, track_module_unregister_proc *unregister_proc, void *user_data);
 
+void *track_module_get_udata(int module_id);
+
 // TODO(zaklaus): not implemented
 int track_module_filter(int module_id, char const **allowlist, int allowlist_len, char const **denylist, int denylist_len);
