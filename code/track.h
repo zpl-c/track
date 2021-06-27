@@ -78,6 +78,9 @@ License:
 #define TRACK_EVENT_PROC(name) int name(char const *event_id, char const *user_id, char const *data, void *user_data)
 typedef TRACK_EVENT_PROC(track_event_proc);
 
+#define TRACK_IDENT_PROC(name) int name(char const *user_id, char const *traits, void *user_data)
+typedef TRACK_IDENT_PROC(track_ident_proc);
+
 #define TRACK_MODULE_UNREGISTER_PROC(name) int name(void *user_data)
 typedef TRACK_MODULE_UNREGISTER_PROC(track_module_unregister_proc);
 
@@ -87,9 +90,10 @@ int track_destroy(void);
 
 //~ Event tracking
 int track_event(char const *event_id, char const *user_id, char const *data);
+int track_ident(char const *user_id, char const *traits);
 
 //~ Module registration methods
-int track_module_register(track_event_proc *event_proc, track_module_unregister_proc *unregister_proc, void *user_data);
+int track_module_register(track_event_proc *event_proc, track_ident_proc *ident_proc, track_module_unregister_proc *unregister_proc, void *user_data);
 
 void *track_module_get_udata(int module_id);
 

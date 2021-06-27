@@ -30,17 +30,6 @@ This library is still in development so no support will be provided. Please, rep
 ## Example code
 
 ```c
-#include "track.h"
-#include "track_curl.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <malloc.h>
-
-// modules
-#include "modules/console/console.h"
-#include "modules/file/file.h"
-#include "modules/http/http.h"
-#include "modules/segment/segment.h"
 
 TRACK_EVENT_PROC(custom_event_handler) {
     (void)user_data;
@@ -48,13 +37,12 @@ TRACK_EVENT_PROC(custom_event_handler) {
     return 0;
 }
 
-TRACK_MODULE_HTTP_PAYLOAD(my_http_payload) {
-    (void)headers;
-    char *buf = (char *)malloc(4096);
-    if (!buf) return 0;
+TRACK_MODULE_HTTP_EVENT(my_http_event) {
+    (void)raw_data;
+    (void)msg_kind;
+    static char buf[4096];
     snprintf(buf, 4096, "{ \"event\": \"%s\", \"user\": \"%s\", \"data\": \"%s\" }", event_id, user_id, data);
-    
-    return buf;
+    return track_module_http_send("http://127.0.0.1:8200/", buf, headers);
 }
 
 int main(void) {
@@ -64,10 +52,13 @@ int main(void) {
     track_module_console_register("demo log");
     track_module_file_register("telemetry.csv");
     track_module_segment_register(segment_key);
-    track_module_register(custom_event_handler, 0, 0);
+    track_module_register(custom_event_handler, 0, 0, 0);
     
     // run tools/echo in node.js to test HTTP endpoint
-    track_module_http_register("http://127.0.0.1:8200/", my_http_payload);
+    track_module_http_register(my_http_event);
+    
+    // identify the user with associated traits
+    track_ident("965d026a-2035-4671-92d6-3bc384ecede4", "{\"servername\": \"foo\" }");
     
     // sample events
     {

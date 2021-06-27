@@ -18,13 +18,12 @@ TRACK_EVENT_PROC(custom_event_handler) {
     return 0;
 }
 
-TRACK_MODULE_HTTP_PAYLOAD(my_http_payload) {
-    (void)headers;
-    char *buf = (char *)malloc(4096);
-    if (!buf) return 0;
+TRACK_MODULE_HTTP_EVENT(my_http_event) {
+    (void)raw_data;
+    (void)msg_kind;
+    static char buf[4096];
     snprintf(buf, 4096, "{ \"event\": \"%s\", \"user\": \"%s\", \"data\": \"%s\" }", event_id, user_id, data);
-    
-    return buf;
+    return track_module_http_send("http://127.0.0.1:8200/", buf, headers);
 }
 
 int main(void) {
@@ -33,14 +32,14 @@ int main(void) {
     track_init(1);
     track_module_console_register("demo log");
     track_module_file_register("telemetry.csv");
-    int seg_id = track_module_segment_register(segment_key);
-    track_module_register(custom_event_handler, 0, 0);
+    track_module_segment_register(segment_key);
+    track_module_register(custom_event_handler, 0, 0, 0);
     
     // run tools/echo in node.js to test HTTP endpoint
-    track_module_http_register("http://127.0.0.1:8200/", my_http_payload);
+    track_module_http_register(my_http_event);
     
-    // identify the user on segment
-    track_module_segment_identify(seg_id, "965d026a-2035-4671-92d6-3bc384ecede4", "{\"servername\": \"foo\" }");
+    // identify the user with associated traits
+    track_ident("965d026a-2035-4671-92d6-3bc384ecede4", "{\"servername\": \"foo\" }");
     
     // sample events
     {

@@ -66,23 +66,9 @@ TRACK_EVENT_PROC(segment__event_handler) {
     return track__module_segment_send(TRACK_MODULE_SEGMENT_TRACK_API, h->write_key, buffer);
 }
 
-int track_module_segment_identify(int module_id, char const *user_id, char const *traits) {
-#ifndef TRACK_DISABLE_VALIDATION
-    zpl_string json_data = zpl_string_make(zpl_heap_allocator(), traits);
-    zpl_json_object validated_data;
-    zpl_json_error err = zpl_json_parse(&validated_data, json_data, zpl_heap_allocator());
-    zpl_json_free(&validated_data);
-    zpl_string_free(json_data);
-    
-    if (err != ZPL_JSON_ERROR_NONE)
-        return -2;
-#endif
-    
-    void *user_data = track_module_get_udata(module_id);
-    ZPL_ASSERT_NOT_NULL(user_data);
-    track_escaped_string u = track_escape_string(user_id, "\"", '\\');
-    
+TRACK_IDENT_PROC(segment__ident_handler) {
     module_segment *h = (module_segment*)user_data;
+    track_escaped_string u = track_escape_string(user_id, "\"", '\\');
     
     static char buffer[TRACK_MODULE_SEGMENT_BUFSIZ];
     snprintf(buffer, TRACK_MODULE_SEGMENT_BUFSIZ, "{\"userId\": \"%s\", \"traits\": %s}", u.text, traits);
@@ -104,5 +90,5 @@ int track_module_segment_register(char const *write_key) {
     *h = (module_segment){
         .write_key = write_key
     };
-    return track_module_register(segment__event_handler, segment__unregister_handler, (void*)h);
+    return track_module_register(segment__event_handler, segment__ident_handler, segment__unregister_handler, (void*)h);
 }

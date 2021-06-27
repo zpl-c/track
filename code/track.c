@@ -10,6 +10,7 @@
 
 typedef struct {
     track_event_proc *event_proc;
+    track_ident_proc *ident_proc;
     track_module_unregister_proc *unregister_proc;
     zpl_array(zpl_string) allowlist;
     zpl_array(zpl_string) denylist;
@@ -74,13 +75,40 @@ int track_event(char const *event_id, char const *user_id, char const *data) {
     return 0;
 }
 
+int track_ident(char const *user_id, char const *traits) {
+    if (!ctx.modules) return -1;
+    
+#ifndef TRACK_DISABLE_VALIDATION
+    zpl_string json_data = zpl_string_make(zpl_heap_allocator(), traits);
+    zpl_json_object validated_data;
+    zpl_json_error err = zpl_json_parse(&validated_data, json_data, zpl_heap_allocator());
+    zpl_json_free(&validated_data);
+    zpl_string_free(json_data);
+    
+    if (err != ZPL_JSON_ERROR_NONE)
+        return -2;
+#endif
+    
+    for (int i = 0; i < zpl_array_count(ctx.modules); i++) {
+        track_module *module = &ctx.modules[i];
+        
+        // TODO(zaklaus): check if event can pass our filters
+        
+        if (module->ident_proc)
+            module->ident_proc(user_id, traits, module->user_data);
+    }
+    
+    return 0;
+}
+
 //~ Module registration methods
-int track_module_register(track_event_proc *event_proc, track_module_unregister_proc *unregister_proc, void *user_data) {
+int track_module_register(track_event_proc *event_proc, track_ident_proc *ident_proc, track_module_unregister_proc *unregister_proc, void *user_data) {
     ZPL_ASSERT_NOT_NULL(ctx.modules);
     ZPL_ASSERT_NOT_NULL(event_proc);
     
     track_module module;
     module.event_proc = event_proc;
+    module.ident_proc = ident_proc;
     module.unregister_proc = unregister_proc;
     module.allowlist = module.denylist = 0;
     module.user_data = user_data;
