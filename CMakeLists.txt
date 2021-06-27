@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.11)
 project(track)
 include(cmake/utils.cmake)
 include(GNUInstallDirs)
