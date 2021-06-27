@@ -69,6 +69,10 @@ macro(setup_curl)
     "WITH_STATIC_RT ON"
     "CMAKE_USE_LIBSSH2 OFF"
     ${CURL_PLATFORM_OPTIONS}
-    )	
+    )
+	set(CURL_LIBRARIES libcurl PARENT_SCOPE)
+	else()
+		find_package(CURL REQUIRED)
+		include_directories(${CURL_INCLUDE_DIR})
 	endif()
 endmacro()
