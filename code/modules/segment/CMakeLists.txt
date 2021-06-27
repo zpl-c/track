@@ -1,6 +1,3 @@
+add_library(track-segment STATIC segment.c)
 include_directories(.)
-
-add_library(track STATIC track.c)
-
 include_directories(${CMAKE_BINARY_DIR}/_deps/curl-src/include)
-add_library(track-curl STATIC track_curl.c)

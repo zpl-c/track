@@ -1,8 +1,10 @@
 #include "track.h"
+#include "track_curl.h"
 
 #define ZPL_IMPL
 #define ZPL_NANO
 #define ZPL_STATIC_LIB
+#define ZPL_ENABLE_HASHING
 #define ZPL_ENABLE_PARSER
 #include "zpl.h"
 
@@ -21,10 +23,10 @@ typedef struct {
 static track_ctx ctx;
 
 //~ Lifecycle methods
-int track_init(void) {
+int track_init(int is_async) {
     zpl_zero_item(&ctx);
-    
     zpl_array_init(ctx.modules, zpl_heap_allocator());
+    track_curl_init(is_async);
     return 0;
 }
 int track_destroy(void) {
@@ -39,6 +41,7 @@ int track_destroy(void) {
         // TODO(zaklaus): clean up filters
     } 
     
+    track_curl_destroy();
     zpl_array_free(ctx.modules);
     ctx.modules = NULL;
     

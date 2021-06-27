@@ -78,7 +78,7 @@ typedef TRACK_EVENT_PROC(track_event_proc);
 typedef TRACK_MODULE_UNREGISTER_PROC(track_module_unregister_proc);
 
 //~ Lifecycle methods
-int track_init(void);
+int track_init(int is_async);
 int track_destroy(void);
 
 //~ Event tracking
