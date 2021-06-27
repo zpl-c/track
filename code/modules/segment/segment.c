@@ -16,6 +16,7 @@
 
 #define TRACK_MODULE_SEGMENT_TRACK_API "https://api.segment.io/v1/track"
 #define TRACK_MODULE_SEGMENT_IDENTIFY_API "https://api.segment.io/v1/identify"
+#define TRACK_MODULE_SEGMENT_GROUP_API "https://api.segment.io/v1/group"
 #define TRACK_MODULE_SEGMENT_BUFSIZ 32768
 
 typedef struct {
@@ -77,6 +78,19 @@ TRACK_IDENT_PROC(segment__ident_handler) {
     return track__module_segment_send(TRACK_MODULE_SEGMENT_IDENTIFY_API, h->write_key, buffer);
 }
 
+TRACK_GROUP_PROC(segment__group_handler) {
+    module_segment *h = (module_segment*)user_data;
+    track_escaped_string u = track_escape_string(user_id, "\"", '\\');
+    track_escaped_string g = track_escape_string(group_id, "\"", '\\');
+    
+    static char buffer[TRACK_MODULE_SEGMENT_BUFSIZ];
+    snprintf(buffer, TRACK_MODULE_SEGMENT_BUFSIZ, "{\"userId\": \"%s\", \"groupId\": \"%s\", \"traits\": %s}", u.text, g.text, traits);
+    
+    zpl_file_close(&u.f);
+    zpl_file_close(&g.f);
+    return track__module_segment_send(TRACK_MODULE_SEGMENT_GROUP_API, h->write_key, buffer);
+}
+
 TRACK_MODULE_UNREGISTER_PROC(segment__unregister_handler) {
     ZPL_ASSERT_NOT_NULL(user_data);
     module_segment *h = (module_segment*)user_data;
@@ -90,5 +104,5 @@ int track_module_segment_register(char const *write_key) {
     *h = (module_segment){
         .write_key = write_key
     };
-    return track_module_register(segment__event_handler, segment__ident_handler, segment__unregister_handler, (void*)h);
+    return track_module_register(segment__event_handler, segment__ident_handler, segment__group_handler, segment__unregister_handler, (void*)h);
 }

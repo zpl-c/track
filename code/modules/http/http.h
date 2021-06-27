@@ -3,6 +3,7 @@
 typedef enum {
     TRACK_HTTP_MSGKIND_TRACK,
     TRACK_HTTP_MSGKIND_IDENTIFY,
+    TRACK_HTTP_MSGKIND_GROUP,
 } track_module_http_msg_kind;
 
 #define TRACK_MODULE_HTTP_EVENT(name) int name(track_module_http_msg_kind msg_kind, char const *event_id, char const *user_id, char const *data, const char *raw_data, void **headers)

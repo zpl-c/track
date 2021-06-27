@@ -67,6 +67,24 @@ TRACK_IDENT_PROC(http__ident_handler) {
     return err;
 }
 
+TRACK_GROUP_PROC(http__group_handler) {
+    ZPL_ASSERT_NOT_NULL(user_data);
+    track_escaped_string u = track_escape_string(user_id, "\"", '\\');
+    track_escaped_string g = track_escape_string(group_id, "\"", '\\');
+    track_escaped_string t = track_escape_string(traits, "\"", '\\');
+    
+    module_http *h = (module_http*)user_data;
+    struct curl_slist *headers = NULL;
+    headers = curl_slist_append(headers, "Accept: application/json");
+    headers = curl_slist_append(headers, "Content-Type: application/json; charset=utf-8");
+    int err = h->proc(TRACK_HTTP_MSGKIND_GROUP, g.text, u.text, t.text, traits, (void**)&headers);
+    
+    zpl_file_close(&u.f);
+    zpl_file_close(&g.f);
+    zpl_file_close(&t.f);
+    return err;
+}
+
 TRACK_MODULE_UNREGISTER_PROC(http__unregister_handler) {
     ZPL_ASSERT_NOT_NULL(user_data);
     module_http *h = (module_http*)user_data;
@@ -80,7 +98,7 @@ int track_module_http_register(track_module_http_event_proc *proc) {
     *h = (module_http){
         .proc = proc
     };
-    return track_module_register(http__event_handler, http__ident_handler, http__unregister_handler, (void*)h);
+    return track_module_register(http__event_handler, http__ident_handler, http__group_handler, http__unregister_handler, (void*)h);
 }
 
 void track_module_http_add_header(void **headers, char const *header) {
