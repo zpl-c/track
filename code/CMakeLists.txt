@@ -2,5 +2,9 @@ include_directories(.)
 
 add_library(track STATIC track.c)
 
-include_directories(${CMAKE_BINARY_DIR}/_deps/curl-src/include)
-add_library(track-curl STATIC track_curl.c)
+if (TRACK_CURL_SUPPORT)
+	include_directories(${CMAKE_BINARY_DIR}/_deps/curl-src/include)
+	add_library(track-curl STATIC track_curl.c)
+else()
+	add_definitions(-DTRACK_DISABLE_CURL_SUPPORT)
+endif()
