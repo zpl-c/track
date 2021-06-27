@@ -17,6 +17,7 @@ option(TRACK_CURL_SUPPORT "ENABLE CURL SUPPORT FOR MODULES" ON)
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     add_compile_options(/MP /W4)
+	add_definitions("-DCURL_STATICLIB")
 endif()
 
 include_directories(code)

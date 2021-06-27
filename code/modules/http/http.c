@@ -7,7 +7,6 @@
 #define ZPL_ENABLE_PARSER
 #include "zpl.h"
 
-#define CURL_STATICLIB
 #include "curl/curl.h"
 
 #include "track_utils.h"

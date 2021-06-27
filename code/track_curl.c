@@ -8,7 +8,6 @@
 #include "zpl.h"
 
 #ifndef TRACK_DISABLE_CURL_SUPPORT
-#define CURL_STATICLIB
 #include "curl/curl.h"
 
 
