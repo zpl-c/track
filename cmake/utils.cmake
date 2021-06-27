@@ -19,6 +19,8 @@ macro(use_cxx11)
 endmacro(use_cxx11)
 
 macro(setup_curl)
+
+	if (NOT UNIX)
     # Prefer static libs over shared lib
     LIST(REVERSE CMAKE_FIND_LIBRARY_SUFFIXES)
     include(../cmake/CPM.cmake)
@@ -58,7 +60,6 @@ macro(setup_curl)
     set(CURL_PLATFORM_OPTIONS "CMAKE_USE_OPENSSL ON;BUILD_SHARED_LIBS ON")
     endif()
 
-	if (NOT UNIX)
     CPMAddPackage(
     NAME curl
     VERSION 7.67.0
