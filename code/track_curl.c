@@ -7,10 +7,10 @@
 #define ZPL_ENABLE_HASHING
 #include "zpl.h"
 
+#ifndef TRACK_DISABLE_CURL_SUPPORT
 #define CURL_STATICLIB
 #include "curl/curl.h"
 
-#include "track_utils.h"
 
 static CURLM *curlm_handle = 0;
 
@@ -88,3 +88,24 @@ int track_curl_perform(void) {
     
     return 0;
 }
+#else
+int track_curl_init(int is_async) {
+    return -1;
+}
+
+int track_curl_destroy(void) {
+    return -1;
+}
+
+int track_curl_send_message(void *handle) {
+    return -1;
+}
+
+int track_curl_poll(void) {
+    return -1;
+}
+
+int track_curl_perform(void) {
+    return -1;
+}
+#endif

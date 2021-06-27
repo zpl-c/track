@@ -3,6 +3,9 @@
 
 define TRACK_DISABLE_VALIDATION to disable JSON data validation, good idea if the data is huge or the traffics is too noisy.
 
+define TRACK_DISABLE_CURL_SUPPORT so that the library won't attempt to initialize libcurl globals, note that this 
+breaks all curl-based modules.
+
 TODO:
 implement event filtering
 
@@ -10,6 +13,7 @@ GitHub:
   https://github.com/zpl-c/track
 
 Version History:
+1.1.0 - Segment module
   1.0.0 - Initial revision
 
 License:
