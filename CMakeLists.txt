@@ -14,10 +14,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 option(TRACK_BUILD_DEMO "BUILD THE DEMO APPLICATION" ON)
 option(TRACK_CURL_SUPPORT "ENABLE CURL SUPPORT FOR MODULES" ON)
 
+add_definitions("-DCURL_STATICLIB")
+
 if(WIN32)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-    add_compile_options(/MP /W4)
-    add_definitions("-DCURL_STATICLIB")
+  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+  add_compile_options(/MP /W4)
 endif()
 
 include_directories(code)

@@ -8,7 +8,7 @@
 #include "zpl.h"
 
 #ifndef TRACK_DISABLE_CURL_SUPPORT
-#include "curl/curl.h"
+#include <curl/curl.h>
 
 
 static CURLM *curlm_handle = 0;

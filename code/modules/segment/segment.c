@@ -8,7 +8,7 @@
 #define ZPL_ENABLE_HASHING
 #include "zpl.h"
 
-#include "curl/curl.h"
+#include <curl/curl.h>
 
 #include "track_utils.h"
 #include "track_curl.h"
