@@ -1,16 +1,16 @@
 // Example project showcasing the use of zpl-track
 
-#include "track.h"
-#include "track_curl.h"
+#include <track/track.h>
+#include <track/track_curl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
 
 // modules
-#include "modules/console/console.h"
-#include "modules/file/file.h"
-#include "modules/http/http.h"
-#include "modules/segment/segment.h"
+#include <track/track_module_console.h>
+#include <track/track_module_file.h>
+#include <track/track_module_http.h>
+#include <track/track_module_segment.h>
 
 TRACK_EVENT_PROC(custom_event_handler) {
     (void)user_data;

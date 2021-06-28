@@ -1,28 +1,57 @@
 include(GNUInstallDirs)
-include_directories(.)
 
-add_library(track STATIC track.c)
+add_library(track STATIC)
+target_sources(track
+  PRIVATE
+    track/track.c
+    track/track_curl.c
 
-if (TRACK_CURL_SUPPORT)
-  if(NOT UNIX)
-    setup_curl()
-    include_directories(${CMAKE_BINARY_DIR}/_deps/curl-src/include)
-    set(CURL_LIBRARIES libcurl PARENT_SCOPE)
-  else()
-    find_package(CURL REQUIRED)
-    if(CURL_FOUND)
-      message(STATUS "Found CURL version: ${CURL_VERSION_STRING}")
-      message(STATUS "Using CURL include dir(s): ${CURL_INCLUDE_DIRS}")
-      message(STATUS "Using CURL lib(s): ${CURL_LIBRARIES}")
-      include_directories(${CURL_INCLUDE_DIRS})
-    else()
-      message(FATAL_ERROR "Could not find CURL")
-    endif()
-  endif()
-	add_library(track-curl STATIC track_curl.c)
-  target_link_libraries(track-curl ${CURL_LIBRARIES})
+    track/track_module_file.c
+    track/track_module_console.c
+    track/track_module_http.c
+    track/track_module_segment.c
+)
+
+target_include_directories(track
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/code/track
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/code>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+
+file(GLOB public_headers "track/*.h" "vendors/*.h")
+set_target_properties(track PROPERTIES PUBLIC_HEADER "${public_headers}")
+
+install(TARGETS track
+    EXPORT "trackConfig"
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # lib
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # bin
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} # include
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/track
+)
+
+install(
+    EXPORT "trackConfig"
+    FILE "trackConfig.cmake"
+    NAMESPACE track::
+    DESTINATION cmake
+)
+
+if(NOT UNIX)
+  setup_curl()
+  include_directories(${CMAKE_BINARY_DIR}/_deps/curl-src/include)
+  set(CURL_LIBRARIES libcurl PARENT_SCOPE)
 else()
-	add_definitions(-DTRACK_DISABLE_CURL_SUPPORT)
+  find_package(CURL REQUIRED)
+  if(CURL_FOUND)
+    message(STATUS "Found CURL version: ${CURL_VERSION_STRING}")
+    message(STATUS "Using CURL include dir(s): ${CURL_INCLUDE_DIRS}")
+    message(STATUS "Using CURL lib(s): ${CURL_LIBRARIES}")
+    include_directories(${CURL_INCLUDE_DIRS})
+  else()
+    message(FATAL_ERROR "Could not find CURL")
+  endif()
 endif()
-
-install(TARGETS track DESTINATION ${CMAKE_INSTALL_BINDIR})
+target_link_libraries(track PUBLIC ${CURL_LIBRARIES})

@@ -3,8 +3,6 @@ project(track)
 include(cmake/utils.cmake)
 include(GNUInstallDirs)
 
-cmake_policy(SET CMP0079 NEW)
-
 set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/)
@@ -13,8 +11,26 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE})
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+if(DEFINED CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    message(
+        STATUS
+        "CMAKE_INSTALL_PREFIX is not set\n"
+        "Default value: ${CMAKE_INSTALL_PREFIX}\n"
+        "Will set it to ${CMAKE_SOURCE_DIR}/install"
+    )
+    set(CMAKE_INSTALL_PREFIX
+        "${CMAKE_SOURCE_DIR}/install"
+        CACHE PATH "Where the library will be installed to" FORCE
+    )
+else()
+    message(
+        STATUS
+        "CMAKE_INSTALL_PREFIX was already set\n"
+        "Current value: ${CMAKE_INSTALL_PREFIX}"
+    )
+endif()
+
 option(TRACK_BUILD_DEMO "BUILD THE DEMO APPLICATION" ON)
-option(TRACK_CURL_SUPPORT "ENABLE CURL SUPPORT FOR MODULES" ON)
 
 add_definitions("-DCURL_STATICLIB")
 
@@ -27,8 +43,7 @@ include_directories(code)
 include_directories(code/vendors)
 
 add_subdirectory(code)
-add_subdirectory(code/modules)
 
 if (TRACK_BUILD_DEMO)
-    add_subdirectory(code/demo)
+  add_subdirectory(code/demo)
 endif()

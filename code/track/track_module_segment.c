@@ -1,4 +1,4 @@
-#include "segment.h"
+#include "track_module_segment.h"
 #include "track.h"
 #include <stdio.h>
 #include <stdlib.h>

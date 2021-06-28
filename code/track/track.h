@@ -3,9 +3,6 @@
 
 define TRACK_DISABLE_VALIDATION to disable JSON data validation, good idea if the data is huge or the traffics is too noisy.
 
-define TRACK_DISABLE_CURL_SUPPORT so that the library won't attempt to initialize libcurl globals, note that this 
-breaks all curl-based modules.
-
 TODO:
 implement event filtering
 
