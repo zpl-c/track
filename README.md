@@ -98,7 +98,7 @@ It will download all the dependencies and build the demo.
 Run `tools/echo` in node.js and then run the compiled demo.
 
 ## Install the library
-Make sure to set CMAKE_PREFIX_PATH to desired install location and then run the following commands:
+Make sure to set `CMAKE_PREFIX_PATH` to desired install location and then run the following commands:
 
 ```sh
 git clone https://github.com/zpl-c/track.git
@@ -123,7 +123,7 @@ add_executable(demo-app main.c)
 target_link_libraries(demo-app CURL::libcurl track::track)
 ```
 
-You can also specify your CMAKE_PREFIX_PATH so that `FindTrack` gets a chance to use a local copy of the library.
+You can also specify your `CMAKE_PREFIX_PATH` so that `FindTrack` gets a chance to use a local copy of the library.
 
 See demo app for more information.
 
