@@ -120,7 +120,7 @@ project(demo)
 include(cmake/FindTrack.cmake)
 
 add_executable(demo-app main.c)
-target_link_libraries(demo-app track::track)
+link_track_library(demo-app)
 ```
 
 You can also specify your `CMAKE_PREFIX_PATH` so that `FindTrack` gets a chance to use a local copy of the library.

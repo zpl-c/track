@@ -14,3 +14,11 @@ if (NOT track_FOUND)
     add_library(track::track ALIAS track)
     include_directories(${CMAKE_BINARY_DIR}/_deps/track-src/code)
 endif()
+
+macro(link_track_library target)
+    target_link_libraries(target track::track)
+
+    if (NOT UNIX)
+        target_link_libraries(target CURL::libcurl)
+    endif ()
+endmacro()
