@@ -3,6 +3,8 @@ project(track)
 include(cmake/utils.cmake)
 include(GNUInstallDirs)
 
+cmake_policy(SET CMP0079 NEW)
+
 set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/)
