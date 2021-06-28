@@ -5,11 +5,13 @@ include(GNUInstallDirs)
 
 set(CMAKE_C_STANDARD 11)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}//${CMAKE_BUILD_TYPE}/)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE})
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+  set(TRACK_IS_MAIN TRUE)
+else()
+  set(TRACK_IS_MAIN FALSE)
+endif()
 
 if(DEFINED CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     message(
@@ -42,8 +44,8 @@ endif()
 include_directories(code)
 include_directories(code/vendors)
 
-add_subdirectory(code)
+add_subdirectory(code track)
 
 if (TRACK_BUILD_DEMO)
-  add_subdirectory(code/demo)
+  add_subdirectory(code/demo track-demo)
 endif()

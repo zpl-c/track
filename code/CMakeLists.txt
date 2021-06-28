@@ -1,3 +1,4 @@
+project(track C)
 include(GNUInstallDirs)
 
 add_library(track STATIC)

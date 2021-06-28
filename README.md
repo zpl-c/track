@@ -89,7 +89,7 @@ You can do the following on the command line to create and build this project:
 ```sh
 git clone https://github.com/zpl-c/track.git
 cd track
-cmake -S . -B build
+cmake -B build
 cmake --build build
 ```
 
@@ -97,18 +97,33 @@ It will download all the dependencies and build the demo.
 
 Run `tools/echo` in node.js and then run the compiled demo.
 
+## Install the library
+Make sure to set CMAKE_PREFIX_PATH to desired install location and then run the following commands:
+
+```sh
+git clone https://github.com/zpl-c/track.git
+cd track
+cmake -B build -DTRACK_BUILD_DEMO=OFF
+cmake --build build --target install
+```
+
+This will build and install the library and its dependencies to the desired install dir.
+
 ## How to use in your project
 You can include the [FindTrack](cmake/FindTrack.cmake) CMake file to download and build zpl.track within your project. It pulls the latest version of the library and builds all its dependencies automatically, all that's left for you to do is to link against the library and its modules, like:
 
 ```sh
 cmake_minimum_required(VERSION 3.11)
 project(demo)
-include(cmake/FindTrack.cmake)
-add_executable(demo-app main.c)
 
-find_package(CURL REQUIRED)
+# FindTrack either finds the library using find_package() call or downloads the library sources and builds it locally.
+include(cmake/FindTrack.cmake)
+
+add_executable(demo-app main.c)
 target_link_libraries(demo-app CURL::libcurl track::track)
 ```
+
+You can also specify your CMAKE_PREFIX_PATH so that `FindTrack` gets a chance to use a local copy of the library.
 
 See demo app for more information.
 
