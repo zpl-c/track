@@ -98,7 +98,7 @@ It will download all the dependencies and build the demo.
 Run `tools/echo` in node.js and then run the compiled demo.
 
 ## Install the library
-Make sure to set `CMAKE_PREFIX_PATH` to desired install location and then run the following commands:
+Make sure to set `CMAKE_INSTALL_PREFIX` to desired install location and then run the following commands:
 
 ```sh
 git clone https://github.com/zpl-c/track.git
