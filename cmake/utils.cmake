@@ -25,37 +25,43 @@ macro(setup_curl)
 
     OPTION(ENABLE_OPENSSL_FROM_SOURCE "BUILD OPENSSL FROM SOURCE AT CONFIGURE TIME" ON)
 
-    if(ENABLE_OPENSSL_FROM_SOURCE)
-    set(BUILD_OPENSSL_WORKING_DIR ${CMAKE_BINARY_DIR}/_external/build-openssl)
-    if(NOT BUILD_OPENSSL_SRC_DIR)
-        set(BUILD_OPENSSL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendors/build-openssl)
-    endif()
-    set(BUILD_OPENSSL_INSTALL_DIR "${BUILD_OPENSSL_WORKING_DIR}/install/OpenSSL")
-    file(MAKE_DIRECTORY ${BUILD_OPENSSL_WORKING_DIR})
-    if(NOT EXISTS ${BUILD_OPENSSL_INSTALL_DIR})
-        message(STATUS "Building OpenSSL.. at ${BUILD_OPENSSL_WORKING_DIR}, Install DIR ${BUILD_OPENSSL_INSTALL_DIR}")
-        execute_process(
-            COMMAND ${CMAKE_COMMAND} ${BUILD_OPENSSL_SRC_DIR} -DINSTALL_DIR=${BUILD_OPENSSL_INSTALL_DIR}
-            WORKING_DIRECTORY ${BUILD_OPENSSL_WORKING_DIR}
-        )
-        execute_process(
-            COMMAND ${CMAKE_COMMAND} --build .
-            WORKING_DIRECTORY ${BUILD_OPENSSL_WORKING_DIR}
-        )
-    else()
-        message(STATUS "${BUILD_OPENSSL_INSTALL_DIR} already exists, skips rebuilding..")
-    endif()
+    if (MSVC)
+        set(ENABLE_OPENSSL_FROM_SOURCE OFF)
+    endif ()
 
-    set(OPENSSL_ROOT_DIR "${BUILD_OPENSSL_INSTALL_DIR}" CACHE INTERNAL "OPENSSL ROOT DIR")
-    message(MESSAGE "Setting OPENSSL ROOT DIR to newly built OpenSSL ${OPENSSL_ROOT_DIR}")
+    if(ENABLE_OPENSSL_FROM_SOURCE)
+        set(BUILD_OPENSSL_WORKING_DIR ${CMAKE_BINARY_DIR}/_external/build-openssl)
+        if(NOT BUILD_OPENSSL_SRC_DIR)
+            set(BUILD_OPENSSL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendors/build-openssl)
+        endif()
+
+        set(BUILD_OPENSSL_INSTALL_DIR "${BUILD_OPENSSL_WORKING_DIR}/install/OpenSSL")
+        file(MAKE_DIRECTORY ${BUILD_OPENSSL_WORKING_DIR})
+
+        if(NOT EXISTS ${BUILD_OPENSSL_INSTALL_DIR})
+            message(STATUS "Building OpenSSL.. at ${BUILD_OPENSSL_WORKING_DIR}, Install DIR ${BUILD_OPENSSL_INSTALL_DIR}")
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} ${BUILD_OPENSSL_SRC_DIR} -DINSTALL_DIR=${BUILD_OPENSSL_INSTALL_DIR}
+                WORKING_DIRECTORY ${BUILD_OPENSSL_WORKING_DIR}
+            )
+            execute_process(
+                COMMAND ${CMAKE_COMMAND} --build .
+                WORKING_DIRECTORY ${BUILD_OPENSSL_WORKING_DIR}
+            )
+        else()
+            message(STATUS "${BUILD_OPENSSL_INSTALL_DIR} already exists, skips rebuilding..")
+        endif()
+
+        set(OPENSSL_ROOT_DIR "${BUILD_OPENSSL_INSTALL_DIR}" CACHE INTERNAL "OPENSSL ROOT DIR")
+        message(MESSAGE "Setting OPENSSL ROOT DIR to newly built OpenSSL ${OPENSSL_ROOT_DIR}")
     endif()
 
     if (MSVC)
-    set(CURL_PLATFORM_OPTIONS "CMAKE_USE_SCHANNEL ON;CMAKE_USE_OPENSSL OFF")
+        set(CURL_PLATFORM_OPTIONS "CMAKE_USE_SCHANNEL ON;CMAKE_USE_OPENSSL OFF")
     elseif(APPLE)
-    set(CURL_PLATFORM_OPTIONS "CMAKE_USE_SECTRANSP OFF;CMAKE_USE_OPENSSL ON")
+        set(CURL_PLATFORM_OPTIONS "CMAKE_USE_SECTRANSP OFF;CMAKE_USE_OPENSSL ON")
     else()
-    set(CURL_PLATFORM_OPTIONS "CMAKE_USE_OPENSSL ON")
+        set(CURL_PLATFORM_OPTIONS "CMAKE_USE_OPENSSL ON")
     endif()
 
     CPMAddPackage(
