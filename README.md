@@ -101,8 +101,7 @@ Run `tools/echo` in node.js and then run the compiled demo.
 You can include the [FindTrack](cmake/FindTrack.cmake) CMake file to download and build zpl.track within your project. It pulls the latest version of the library and builds all its dependencies automatically, all that's left for you to do is to link against the library and its modules, like:
 
 ```sh
-target_link_libraries(track-demo libcurl track track-console track-file track-curl track-http track-segment)
-link_system_libs(track-demo)
+target_link_libraries(track-demo ${CURL_LIBRARIES} track track-console track-file track-curl track-http track-segment)
 ```
 
 See demo app for more information.
