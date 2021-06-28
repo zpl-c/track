@@ -22,9 +22,13 @@ jobs:
         sudo apt-get update -qq
         sudo apt-get install gcc-multilib libcurl4-openssl-dev
 
+    - name: Setup VS2019
+      if: matrix.os == 'windows-latest'
+      uses: warrenbuckley/Setup-MSBuild@v1
+
     - name: Configure CMake
-      run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -B build
 
     - name: Build
-      run: cmake --build build --config ${{env.BUILD_TYPE}}
+      run: cmake --build build
 
