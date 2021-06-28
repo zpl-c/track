@@ -43,6 +43,7 @@ install(
 find_package(CURL QUIET)
 if(NOT CURL_FOUND)
   unset(CURL_FOUND)
+  unset(CURL_LIBRARY)
   setup_curl()
   include_directories(${CMAKE_BINARY_DIR}/_deps/curl-src/include)
   set(CURL_LIBRARIES libcurl PARENT_SCOPE)
