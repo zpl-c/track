@@ -16,13 +16,13 @@ if (NOT track_FOUND)
 endif()
 
 macro(link_track_library target)
-    target_link_libraries(target track::track)
+    target_link_libraries(${target} track::track)
 
     if (NOT UNIX)
         # Assume CURL is available if track was found locally
         if (track_FOUND)
             find_package(CURL REQUIRED)
         endif ()
-        target_link_libraries(target CURL::libcurl)
+        target_link_libraries(${target} CURL::libcurl)
     endif ()
 endmacro()
