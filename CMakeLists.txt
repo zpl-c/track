@@ -34,7 +34,7 @@ endif()
 
 option(TRACK_BUILD_DEMO "BUILD THE DEMO APPLICATION" ON)
 
-add_definitions("-DCURL_STATICLIB")
+add_definitions("-DCURL_STATICLIB" "-DTRACK_SHARED_LIB")
 
 if(WIN32)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)

@@ -1,3 +1,4 @@
 #pragma once
+#include "track_system.h"
 
-int track_module_segment_register(char const *write_key);
+TRACK_API int track_module_segment_register(char const *write_key);

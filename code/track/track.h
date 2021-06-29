@@ -70,6 +70,7 @@ License:
 
 */
 #pragma once
+#include "track_system.h"
 
 //~ Callbacks
 #define TRACK_EVENT_PROC(name) int name(char const *event_id, char const *user_id, char const *data, void *user_data)
@@ -85,18 +86,18 @@ typedef TRACK_GROUP_PROC(track_group_proc);
 typedef TRACK_MODULE_UNREGISTER_PROC(track_module_unregister_proc);
 
 //~ Lifecycle methods
-int track_init(int is_async);
-int track_destroy(void);
+TRACK_API int track_init(int is_async);
+TRACK_API int track_destroy(void);
 
 //~ Event tracking
-int track_event(char const *event_id, char const *user_id, char const *data);
-int track_ident(char const *user_id, char const *traits);
-int track_group(char const *user_id, char const *group_id, char const *traits);
+TRACK_API int track_event(char const *event_id, char const *user_id, char const *data);
+TRACK_API int track_ident(char const *user_id, char const *traits);
+TRACK_API int track_group(char const *user_id, char const *group_id, char const *traits);
 
 //~ Module registration methods
-int track_module_register(track_event_proc *event_proc, track_ident_proc *ident_proc, track_group_proc *group_proc, track_module_unregister_proc *unregister_proc, void *user_data);
+TRACK_API int track_module_register(track_event_proc *event_proc, track_ident_proc *ident_proc, track_group_proc *group_proc, track_module_unregister_proc *unregister_proc, void *user_data);
 
-void *track_module_get_udata(int module_id);
+TRACK_API void *track_module_get_udata(int module_id);
 
 // TODO(zaklaus): not implemented
-int track_module_filter(int module_id, char const **allowlist, int allowlist_len, char const **denylist, int denylist_len);
+TRACK_API int track_module_filter(int module_id, char const **allowlist, int allowlist_len, char const **denylist, int denylist_len);

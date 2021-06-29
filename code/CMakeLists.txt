@@ -1,7 +1,7 @@
 project(track C)
 include(GNUInstallDirs)
 
-add_library(track STATIC)
+add_library(track SHARED)
 target_sources(track
   PRIVATE
     track/track.c
@@ -12,6 +12,8 @@ target_sources(track
     track/track_module_http.c
     track/track_module_segment.c
 )
+
+target_compile_definitions(track PRIVATE "-DTRACK_EXPORTS")
 
 target_include_directories(track
   PRIVATE
@@ -44,7 +46,7 @@ if(NOT UNIX)
   set(CURL_LIBRARY "" PARENT_SCOPE)
   setup_curl()
   include_directories(${CMAKE_BINARY_DIR}/_deps/curl-src/include)
-  set(CURL_LIBRARIES libcurl PARENT_SCOPE)
+  set(CURL_LIBRARIES libcurl)
 else()
   find_package(CURL QUIET)
   message(STATUS "Found CURL version: ${CURL_VERSION_STRING}")
@@ -52,4 +54,5 @@ else()
   message(STATUS "Using CURL lib(s): ${CURL_LIBRARIES}")
   include_directories(${CURL_INCLUDE_DIRS})
 endif()
-target_link_libraries(track PUBLIC ${CURL_LIBRARIES})
+
+target_link_libraries(track PRIVATE ${CURL_LIBRARIES})

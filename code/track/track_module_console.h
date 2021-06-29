@@ -1,4 +1,5 @@
 #pragma once
+#include "track_system.h"
 
-int track_module_console_register(char const *prefix);
+TRACK_API int track_module_console_register(char const *prefix);
 
