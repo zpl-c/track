@@ -27,6 +27,14 @@ zpl.track is a cross-platform event tracker that can send your event data to pro
 
 This library is still in development so no support will be provided. Please, report any issues you have found.
 
+## Supported destinations
+
+* Segment (https://segment.com/)
+* HTTP handler (via cURL)
+* File writer
+* Console writer
+* Custom handler (via callback)
+
 ## Example code
 
 ```c
