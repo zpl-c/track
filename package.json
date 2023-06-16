@@ -1,0 +1,40 @@
+{
+  "name": "track.c",
+  "version": "2.0.0",
+  "homepage": "https://github.com/zpl-c/track#readme",
+  "description": "C99 event tracking library.",
+  "author": "Dominik Madarasz <zaklaus@outlook.com> (http://madaraszd.net/)",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zpl-c/track.git"
+  },
+  "scripts": {
+    "embed": "node -e 'require(\"./misc/packager\").embedIncludes()'",
+    "release": "release-it",
+    "release-patch": "release-it patch --ci",
+    "release-minor": "release-it minor --ci",
+    "release-major": "release-it major --ci",
+    "release-patch-pre": "release-it patch --preRelease=pre --ci",
+    "release-minor-pre": "release-it minor --preRelease=pre --ci",
+    "release-major-pre": "release-it major --preRelease=pre --ci",
+    "test": "make test"
+  },
+  "release-it": {
+    "npm": {
+      "publish": false
+    },
+    "github": {
+      "release": true,
+      "assets": [
+        "misc/deploy/track.h"
+      ]
+    },
+    "plugins": {
+      "./misc/packager.js": {}
+    }
+  },
+  "devDependencies": {
+    "release-it": "^14.11.6"
+  }
+}

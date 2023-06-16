@@ -15,7 +15,6 @@ patterns =
     "*.sh",
     "*.4coder",
     "*.txt",
-    "*.cmake",
 };
 
 blacklist_patterns =
@@ -25,16 +24,13 @@ blacklist_patterns =
 
 load_paths =
 {
-    {{
-        { ".", .recursive = false, .relative = true },
-        { "code", .recursive = true, .relative = true },
-        { "cmake", .recursive = true, .relative = true }
-    }, .os = "win"}
+    {
+        { {"."}, .recursive = true, .relative = true }, .os = "win"
+    },
 };
 
 command_list =
 {
-    
     {
         .name = "build",
         .out = "*compilation*",
@@ -43,23 +39,38 @@ command_list =
         .cursor_at_end = false,
         .cmd =
         {
-            { "cmake --build build", .os = "win" },
+            { "call misc/win/build_quick.bat", .os = "win" },
+            { "echo Linux build command not implemented for 4coder project.", .os = "linux" },
         },
     },
     
     {
         .name = "run",
-        .out = "*console*",
-        .footer_panel = false,
+        .out = "*compilation*",
+        .footer_panel = true,
+        .save_dirty_files = true,
+        .cursor_at_end = false,
+        .cmd =
+        {
+            { "call misc/win/run_quick.bat", .os = "win" },
+            { "echo Linux run command not implemented for 4coder project.", .os = "linux" },
+        },
+    },
+    
+    {
+        .name = "test",
+        .out = "*compilation*",
+        .footer_panel = true,
         .save_dirty_files = true,
         .cursor_at_end = true,
         .cmd =
         {
-            { "run.bat", .os = "win" },
-        },
+            { "call misc/win/run_tester.bat", .os = "win" },
+        }
     },
     
 };
 
 fkey_command[1] = "build";
 fkey_command[2] = "run";
+fkey_command[3] = "test";

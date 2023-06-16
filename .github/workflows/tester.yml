@@ -1,0 +1,104 @@
+name: tester
+on:
+  push:
+    tags-ignore:
+      - '[0-9]+.[0-9]+.[0-9]+'
+    branches:
+      - master
+      - review/**
+      - ci/**
+    paths:
+      - 'code/**'
+      - 'Makefile'
+      - 'misc/CMakeLists.txt'
+  workflow_dispatch:
+  # pull_request:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'code/**'
+  #     - 'Makefile'
+  #     - 'misc/CMakeLists.txt'
+
+jobs:
+  prep:
+    name: Notify about testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: inlife/actiord-action@v1
+        if: "always()"
+        continue-on-error: true
+        with:
+          url: ${{ secrets.ACTIORD_URL }}
+          icon: "https://cdn.zakto.pw/office/test.jpg"
+          state: started
+  build-win:
+    name: Test Windows
+    runs-on: windows-latest
+    needs: [prep]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run cmake generator
+        run: mkdir build ; cd build ; cmake ../misc
+      - name: Run Windows build
+        run: cd build ; cmake --build .
+      - name: Run unit tests
+        run: cd build ; .\Debug\tester.exe
+
+  build-lin:
+    name: Test Linux
+    runs-on: ubuntu-latest
+    needs: [prep]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run build on Linux
+        run: make
+      - name: Run optimized build on Linux
+        if: ${{ contains(github.event.head_commit.message, 'Release') }}
+        run: LEVEL=-O3 make
+
+  build-arm:
+    name: Test arm family
+    runs-on: ubuntu-latest
+    needs: [prep]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install arm cross-compiler
+        run: sudo apt install -y gcc-arm-linux-gnueabi g++-arm-linux-gnueabi
+      - name: Run build on ARMv6
+        run: CC=arm-linux-gnueabi-gcc CXX=arm-linux-gnueabi-g++ LEVEL="-g -march=armv6" make clean examples
+      - name: Run build on ARMv7
+        run: CC=arm-linux-gnueabi-gcc CXX=arm-linux-gnueabi-g++ LEVEL="-g -march=armv7" make clean examples
+      - name: Run build on ARMv8a
+        run: CC=arm-linux-gnueabi-gcc CXX=arm-linux-gnueabi-g++ LEVEL="-g -march=armv8-a" make clean examples
+  build-mac:
+    name: Test macOS
+    runs-on: macOS-latest
+    needs: [prep]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run build on macOS
+        run: make
+      - name: Run optimized build on macOS
+        if: ${{ contains(github.event.head_commit.message, 'Release') }}
+        run: LEVEL=-O3 make
+
+  done:
+    name: Notify about status
+    runs-on: ubuntu-latest
+    needs: [build-mac, build-lin, build-win, build-arm]
+    if: "always()"
+    steps:
+      - uses: inlife/actiord-action@v1
+        if: ${{ contains(needs.build-mac.result, 'success') && contains(needs.build-lin.result, 'success') && contains(needs.build-win.result, 'success') && contains(needs.build-arm.result, 'success') }}
+        continue-on-error: true
+        with:
+          url: ${{ secrets.ACTIORD_URL }}
+          state: succeeded
+      - uses: inlife/actiord-action@v1
+        if: ${{ !(contains(needs.build-mac.result, 'success') && contains(needs.build-lin.result, 'success') && contains(needs.build-win.result, 'success') && contains(needs.build-arm.result, 'success')) }}
+        continue-on-error: true
+        with:
+          url: ${{ secrets.ACTIORD_URL }}
+          icon: "https://cdn.zakto.pw/office/fail.jpg"
+          state: failed

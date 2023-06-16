@@ -1,14 +1,29 @@
-install
-build
-pkg
-build.bat
-run.bat
-run_release.bat
-clean.bat
-work
-.vscode
-.ds_store
+# project files & folders
+build/
+node_modules/
+misc/deploy/
 
+# other
+.DS_Store
+.swp
+.vscode
+.vs
+package-lock.json
+build.bat
+
+# workdir
+work/
+
+# qtcreator
+zpl.creator
+zpl.creator.*
+zpl.cflags
+zpl.config
+zpl.cxxflags
+zpl.includes
+zpl.files
+
+# gtags
 GPATH
 GRTAGS
 GTAGS
