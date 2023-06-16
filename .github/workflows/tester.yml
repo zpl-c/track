@@ -4,7 +4,7 @@ on:
     tags-ignore:
       - '[0-9]+.[0-9]+.[0-9]+'
     branches:
-      - master
+      - main
       - review/**
       - ci/**
     paths:
@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
   # pull_request:
   #   branches:
-  #     - master
+  #     - main
   #   paths:
   #     - 'code/**'
   #     - 'Makefile'
