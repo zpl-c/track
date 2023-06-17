@@ -23,8 +23,8 @@ License:
 #define TRACK_H
 
 #define TRACK_VERSION_MAJOR 2
-#define TRACK_VERSION_MINOR 0
-#define TRACK_VERSION_PATCH 2
+#define TRACK_VERSION_MINOR 1
+#define TRACK_VERSION_PATCH 0
 #define TRACK_VERSION_PRE ""
 
 #include "zpl_hedley.h"

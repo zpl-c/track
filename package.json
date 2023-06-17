@@ -1,6 +1,6 @@
 {
   "name": "track.c",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "homepage": "https://github.com/zpl-c/track#readme",
   "description": "C99 event tracking library.",
   "author": "Dominik Madarasz <zaklaus@outlook.com> (http://madaraszd.net/)",
