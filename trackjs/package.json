@@ -1,0 +1,26 @@
+{
+  "name": "trackjs",
+  "version": "1.0.0",
+  "description": "NodeJS receiver for zpl.track C99 library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zpl-c/track.git"
+  },
+  "keywords": [
+    "c99",
+    "udp",
+    "event",
+    "etl",
+    "segment"
+  ],
+  "author": "Dominik Madarasz <zaklaus@outlook.com> (http://madaraszd.net/)",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/zpl-c/track/issues"
+  },
+  "homepage": "https://github.com/zpl-c/track#readme"
+}
