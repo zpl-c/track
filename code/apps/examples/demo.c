@@ -1,6 +1,7 @@
 #define TRACK_IMPL
 #include <track.h>
 
+#include <stdlib.h> // for rand, srand
 #include <time.h> // for time
 #include <string.h> // for printf, snprintf
 
@@ -15,7 +16,7 @@ int err = 0;
     }
 
 int main() {
-    srand(time(NULL)+_rdtsc());
+    srand(time(NULL)*time(NULL));
     CHECK(track_init("127.0.0.1", "8200"));
 
     char userId[13] = {0};
