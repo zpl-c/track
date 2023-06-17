@@ -64,7 +64,7 @@ module.exports = {
 		})
 
 		module.sock.on('message', (msg, rinfo) => {
-			if (module.cb_log) module.cb_log(`${rinfo.address}: ${msg.toString()}`)
+			if (module.cb_log) module.cb_log(msg, rinfo)
 
 			try {
 				const payload = JSON.parse(msg)
