@@ -60,6 +60,14 @@ cmake --build build
 
 Run `build/echo` first, then run the compiled `build/demo`.
 
+## NodeJS event receiver companion
+We offer a simple to use NodeJS library to receive telemetry data from zpl.track. You can check it out on [npm registry](https://www.npmjs.com/package/zpl.track) or by installing the package locally using:
+```sh
+npm install --save zpl.track
+# OR
+yarn install zpl.track
+```
+
 ## Example code
 
 ```c
