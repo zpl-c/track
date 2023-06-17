@@ -5,7 +5,7 @@
 <br />
 
 <div align="center">
-    <a href="https://github.com/zpl-c/skeleton/actions"><img src="https://img.shields.io/github/workflow/status/zpl-c/track/tester?label=Tests&style=for-the-badge" alt="Build status" /></a>
+    <a href="https://github.com/zpl-c/skeleton/actions"><img src="https://img.shields.io/github/actions/workflow/status/zpl-c/track/tester?label=Tests&style=for-the-badge" alt="Build status" /></a>
     <a href="https://discord.gg/2fZVEym"><img src="https://img.shields.io/discord/354670964400848898?color=7289DA&style=for-the-badge" alt="discord" /></a>
 </div>
 
@@ -23,10 +23,6 @@
 
 # Introduction
 zpl.track is a cross-platform event tracker that can send your event data to a UDP echo server. You can then pipe the telemetry data to any destinations desired. It aims to be very minimalist and easy to integrate.
-
-## Disclaimer
-
-This library is still in development so no support will be provided. Please, report any issues you have found.
 
 ## Example code
 
