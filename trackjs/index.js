@@ -20,13 +20,21 @@ module.exports = {
 				const payload = JSON.parse(msg)
 
 				// determine which callback to execute
-				if (payload.hasOwnProperty('userId') && payload.hasOwnProperty('event') && payload.hasOwnProperty('properties')) {
+				/**/if (Object.keys(payload).length == 3 
+						&& payload.hasOwnProperty('userId') 
+						&& payload.hasOwnProperty('event') 
+						&& payload.hasOwnProperty('properties')) {
 					if (module.callbacks["event"]) module.callbacks["event"](payload)
 				}
-				else if (payload.hasOwnProperty('userId') && payload.hasOwnProperty('groupId') && payload.hasOwnProperty('traits')) {
+				else if (Object.keys(payload).length == 3 
+						&& payload.hasOwnProperty('userId') 
+						&& payload.hasOwnProperty('groupId') 
+						&& payload.hasOwnProperty('traits')) {
 					if (module.callbacks["group"]) module.callbacks["group"](payload)
 				}
-				else if (payload.hasOwnProperty('userId') && payload.hasOwnProperty('traits')) {
+				else if (Object.keys(payload).length == 2 
+						&& payload.hasOwnProperty('userId') 
+						&& payload.hasOwnProperty('traits')) {
 					if (module.callbacks["ident"]) module.callbacks["ident"](payload)
 				} else {
 					if (module.callbacks["unknown"]) module.callbacks["unknown"](payload)
