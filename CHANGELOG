@@ -1,3 +1,4 @@
+2.1.0 - added track_event_props
 2.0.2 - changed TRACK_SEND_BUFSIZE size to 576
 2.0.1 - minor fixes
 2.0.0 - complete rewrite

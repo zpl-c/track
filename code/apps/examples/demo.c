@@ -27,6 +27,15 @@ int main() {
     CHECK(track_event("demo_app action", userId, "{\\\"foo\\\": \\\"bar\\\"}"));
     CHECK(track_group(userId, "abc", "{\\\"demoId\\\": 42, \\\"name\\\": \\\"Jane Doe\\\"}"));
 
+    track_prop props[] = {
+        {"mode", "\\\"demo\\\""},
+        {"speed", "\\\"fast\\\""},
+        {"contains_bugs", "false"},
+        {0}
+    };
+
+    CHECK(track_event_props("demo_app submited", userId, props));
+
     CHECK(track_destroy());
     return 0;
 }
