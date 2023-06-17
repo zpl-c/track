@@ -95,6 +95,8 @@ int main() {
 }
 ```
 
+## Looking for the old Segment.IO version?
+We discontinued the outdated library due to its complexity and reliance on cURL and CMake. We made modifications and streamlined the API for simplicity and performance. The old version can still be accessed [here](https://github.com/zpl-c/track/tree/v1), but we don't provide support for it.
 
 ## License
 
