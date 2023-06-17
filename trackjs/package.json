@@ -1,6 +1,6 @@
 {
   "name": "zpl.track",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "NodeJS receiver for zpl.track C99 library.",
   "main": "index.js",
   "scripts": {
