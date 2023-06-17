@@ -34,7 +34,7 @@ int main() {
         {0}
     };
 
-    CHECK(track_event_props("demo_app submited", userId, props));
+    CHECK(track_event_props("demo_app submitted", userId, props));
 
     CHECK(track_destroy());
     return 0;
