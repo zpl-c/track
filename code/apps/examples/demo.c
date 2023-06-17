@@ -19,11 +19,11 @@ int main() {
     CHECK(track_event("open_demo_app", "0421", "1234"));
     CHECK(track_group("0421", "abc", "demo,quick"));
 
-    for (int i = 0; i < 999; i++) {
-        static char buf[4]={0};
-        snprintf(buf, 4, "%d", i);
-        CHECK(track_event("demo_counter", "0421", buf));
-    }
+    // for (int i = 0; i < 999; i++) {
+    //     static char buf[4]={0};
+    //     snprintf(buf, 4, "%d", i);
+    //     CHECK(track_event("demo_counter", "0421", buf));
+    // }
 
     CHECK(track_destroy());
     return 0;
