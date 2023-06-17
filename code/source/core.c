@@ -1,5 +1,7 @@
 // file: source/core.c
 
+#include <string.h> // for strlen, memcpy
+
 int32_t track__sock = -1;
 
 //~ Lifecycle methods

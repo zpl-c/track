@@ -1,7 +1,7 @@
 #define TRACK_IMPL
 #include <track.h>
 
-#include <string.h> // for printf, itoa
+#include <string.h> // for printf, snprintf
 
 int err = 0;
 
@@ -21,7 +21,7 @@ int main() {
 
     for (int i = 0; i < 999; i++) {
         static char buf[4]={0};
-        itoa(i, buf, 10);
+        snprintf(buf, 4, "%d", i);
         CHECK(track_event("demo_counter", "0421", buf));
     }
 
