@@ -1,3 +1,4 @@
+2.1.1 - ensure data is sent as JSON object to avoid double escaping strings
 2.1.0 - added track_event_props
 2.0.2 - changed TRACK_SEND_BUFSIZE size to 576
 2.0.1 - minor fixes

@@ -22,14 +22,14 @@ int main() {
     char userId[13] = {0};
     snprintf(userId, 13, "id-%d", rand()%99999);
 
-    CHECK(track_ident(userId, "{\\\"demoId\\\": 42, \\\"name\\\": \\\"Jane Doe\\\"}"));
-    CHECK(track_event("demo_app opened", userId, "{\\\"foo\\\": 123, \\\"open_timestamp\\\": 123893893}"));
-    CHECK(track_event("demo_app action", userId, "{\\\"foo\\\": \\\"bar\\\"}"));
-    CHECK(track_group(userId, "abc", "{\\\"demoId\\\": 42, \\\"name\\\": \\\"Jane Doe\\\"}"));
+    CHECK(track_ident(userId, "{\"demoId\": 42, \"name\": \"Jane Doe\"}"));
+    CHECK(track_event("demo_app opened", userId, "{\"foo\": 123, \"open_timestamp\": 123893893}"));
+    CHECK(track_event("demo_app action", userId, "{\"foo\": \"bar\"}"));
+    CHECK(track_group(userId, "abc", "{\"demoId\": 42, \"name\": \"Jane Doe\"}"));
 
     track_prop props[] = {
-        {"mode", "\\\"demo\\\""},
-        {"speed", "\\\"fast\\\""},
+        {"mode", "\"demo\""},
+        {"speed", "\"fast\""},
         {"contains_bugs", "false"},
         {0}
     };

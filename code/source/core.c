@@ -69,9 +69,9 @@ int track_event(char const *event_id, char const *user_id, char const *json_payl
     TRACK__APPEND_SAFE(user_id);
     TRACK__APPEND_SAFE("\",\"event\":\"");
     TRACK__APPEND_SAFE(event_id);
-    TRACK__APPEND_SAFE("\",\"properties\":\"");
+    TRACK__APPEND_SAFE("\",\"properties\":");
     TRACK__APPEND_SAFE(json_payload);
-    TRACK__APPEND_SAFE("\"}");
+    TRACK__APPEND_SAFE("}");
 
     if (!swrapSend(track__sock, track__buffer, track__buffer_len))
         return -TRACK_ERROR_SEND_FAIL;
@@ -87,9 +87,9 @@ int track_ident(char const *user_id, char const *traits) {
 
     TRACK__APPEND_SAFE("{\"userId\":\"");
     TRACK__APPEND_SAFE(user_id);
-    TRACK__APPEND_SAFE("\",\"traits\":\"");
+    TRACK__APPEND_SAFE("\",\"traits\":");
     TRACK__APPEND_SAFE(traits);
-    TRACK__APPEND_SAFE("\"}");
+    TRACK__APPEND_SAFE("}");
 
     if (!swrapSend(track__sock, track__buffer, track__buffer_len))
         return -TRACK_ERROR_SEND_FAIL;
@@ -107,9 +107,9 @@ int track_group(char const *user_id, char const *group_id, char const *traits) {
     TRACK__APPEND_SAFE(user_id);
     TRACK__APPEND_SAFE("\",\"groupId\":\"");
     TRACK__APPEND_SAFE(group_id);
-    TRACK__APPEND_SAFE("\",\"traits\":\"");
+    TRACK__APPEND_SAFE("\",\"traits\":");
     TRACK__APPEND_SAFE(traits);
-    TRACK__APPEND_SAFE("\"}");
+    TRACK__APPEND_SAFE("}");
 
     if (!swrapSend(track__sock, track__buffer, track__buffer_len))
         return -TRACK_ERROR_SEND_FAIL;
@@ -126,9 +126,9 @@ int track_event_props(char const *event_id, char const *user_id, const track_pro
 
     TRACK__APPEND_SAFE_EX(buf, &len, "{");
     while (props->key) {
-        TRACK__APPEND_SAFE_EX(buf, &len, "\\\"");
+        TRACK__APPEND_SAFE_EX(buf, &len, "\"");
         TRACK__APPEND_SAFE_EX(buf, &len, props->key);
-        TRACK__APPEND_SAFE_EX(buf, &len, "\\\":");
+        TRACK__APPEND_SAFE_EX(buf, &len, "\":");
         TRACK__APPEND_SAFE_EX(buf, &len, props->val);
         ++props;
         if (props->key) {
