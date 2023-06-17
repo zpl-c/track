@@ -18,21 +18,22 @@ module.exports = {
 
 			try {
 				const payload = JSON.parse(msg)
+				const numFields = Object.keys(payload).length
 
 				// determine which callback to execute
-				/**/if (Object.keys(payload).length == 3 
+				/**/if (numFields == 3 
 						&& payload.hasOwnProperty('userId') 
 						&& payload.hasOwnProperty('event') 
 						&& payload.hasOwnProperty('properties')) {
 					if (module.callbacks["event"]) module.callbacks["event"](payload)
 				}
-				else if (Object.keys(payload).length == 3 
+				else if (numFields == 3 
 						&& payload.hasOwnProperty('userId') 
 						&& payload.hasOwnProperty('groupId') 
 						&& payload.hasOwnProperty('traits')) {
 					if (module.callbacks["group"]) module.callbacks["group"](payload)
 				}
-				else if (Object.keys(payload).length == 2 
+				else if (numFields == 2 
 						&& payload.hasOwnProperty('userId') 
 						&& payload.hasOwnProperty('traits')) {
 					if (module.callbacks["ident"]) module.callbacks["ident"](payload)

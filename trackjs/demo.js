@@ -1,8 +1,8 @@
 const track = require('./index.js')
 
-const host = process.env.HOST || null;
-const port = process.env.PORT || 8200;
-const prot = process.env.PROT_KIND || 'udp6';
+const host = process.env.HOST 	   || null
+const port = process.env.PORT 	   || 8200
+const prot = process.env.PROT_KIND || 'udp6'
 
 track.init(prot)
 
