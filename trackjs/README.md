@@ -39,15 +39,15 @@ const prot = process.env.PROT_KIND || 'udp6'
 track.init(prot)
 
 track.on('event', ({userId, event, properties}) => {
-    console.log(`Event: ${event} from [${userId}]: ${properties}`)
+    console.log(`Event: ${event} from [${userId}]: ${JSON.stringify(properties)}`)
 })
 
 track.on('ident', ({userId, traits}) => {
-    console.log(`User: ${userId} with traits: ${traits}`)
+    console.log(`User: ${userId} with traits: ${JSON.stringify(traits)}`)
 })
 
 track.on('group', ({userId, groupId, traits}) => {
-    console.log(`User: ${userId}, group: ${groupId} with traits: ${traits}`)
+    console.log(`User: ${userId}, group: ${groupId} with traits: ${JSON.stringify(traits)}`)
 })
 
 track.on('error', (err, msg) => {
@@ -56,6 +56,7 @@ track.on('error', (err, msg) => {
 })
 
 track.bind(port, host)
+
 ```
 
 ## License
