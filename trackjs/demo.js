@@ -10,11 +10,9 @@ track.on('event', ({userId, event, properties}) => {
 	console.log(`Event: ${event} from [${userId}]: ${properties}`)
 })
 
-
 track.on('ident', ({userId, traits}) => {
 	console.log(`User: ${userId} with traits: ${traits}`)
 })
-
 
 track.on('group', ({userId, groupId, traits}) => {
 	console.log(`User: ${userId}, group: ${groupId} with traits: ${traits}`)
