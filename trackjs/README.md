@@ -23,12 +23,14 @@
 # Introduction
 zpl.track is a cross-platform event tracker that can send your event data to a UDP echo server. It aims to be very minimalist and easy to integrate.
 
+You can find the C99 library [here](https://github.com/zpl-c/track).
+
 This library serves as a receiver for zpl.track that you can use to collect telemetry data. You can then pipe the telemetry data to any destinations desired.
 
 ## How to use this library?
 
 ```js
-const track = require('./index.js')
+const track = require('zpl.track')
 
 const host = process.env.HOST      || null
 const port = process.env.PORT      || 8200
