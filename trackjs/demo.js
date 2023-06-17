@@ -16,4 +16,9 @@ track.group((user, group, traits) => {
 	console.log(`User: ${user}, group: ${group} with traits: ${traits}`)
 })
 
+track.error((err, msg) => {
+	console.error(err)
+	if (msg) console.error(msg)
+})
+
 track.bind(8200)

@@ -8,10 +8,11 @@ module.exports = {
 		module.sock = dgram.createSocket({type: type, ipv6Only: ipv6_only})
 
 		module.sock.on('error', err => {
-			throw err
+			if (module.cb_error) module.cb_error(err)
 		})
 
-		module.sock.on('message', (msg, rinfo) => {
+		module.sock.on('message', (rmsg, rinfo) => {
+			const msg = rmsg.toString()
 			if (module.cb_log) module.cb_log(msg, rinfo)
 
 			try {
@@ -30,8 +31,8 @@ module.exports = {
 					if (module.cb_unknown) module.cb_unknown(payload)
 				}
 			}
-			catch (e) {
-				if (module.cb_error) module.cb_error(msg.toString())
+			catch (err) {
+				if (module.cb_error) module.cb_error(err, msg)
 			}
 		})
 	},
