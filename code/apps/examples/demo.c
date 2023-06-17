@@ -15,7 +15,7 @@ int err = 0;
     }
 
 int main() {
-    srand(time(NULL));
+    srand(time(NULL)+_rdtsc());
     CHECK(track_init("127.0.0.1", "8200"));
 
     char userId[13] = {0};
