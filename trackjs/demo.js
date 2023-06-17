@@ -1,6 +1,10 @@
 const track = require('./index.js')
 
-track.init()
+const host = process.env.HOST || null;
+const port = process.env.PORT || 8200;
+const prot = process.env.PROT_KIND || 'udp6';
+
+track.init(prot)
 
 track.event((user, event, props) => {
 	console.log(`Event: ${event} from [${user}]: ${props}`)
@@ -21,4 +25,4 @@ track.error((err, msg) => {
 	if (msg) console.error(msg)
 })
 
-track.bind(8200)
+track.bind(port, host)
