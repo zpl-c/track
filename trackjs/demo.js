@@ -6,21 +6,21 @@ const prot = process.env.PROT_KIND || 'udp6';
 
 track.init(prot)
 
-track.event((user, event, props) => {
-	console.log(`Event: ${event} from [${user}]: ${props}`)
+track.on('event', ({userId, event, properties}) => {
+	console.log(`Event: ${event} from [${userId}]: ${properties}`)
 })
 
 
-track.ident((user, traits) => {
-	console.log(`User: ${user} with traits: ${traits}`)
+track.on('ident', ({userId, traits}) => {
+	console.log(`User: ${userId} with traits: ${traits}`)
 })
 
 
-track.group((user, group, traits) => {
-	console.log(`User: ${user}, group: ${group} with traits: ${traits}`)
+track.on('group', ({userId, groupId, traits}) => {
+	console.log(`User: ${userId}, group: ${groupId} with traits: ${traits}`)
 })
 
-track.error((err, msg) => {
+track.on('error', (err, msg) => {
 	console.error(err)
 	if (msg) console.error(msg)
 })
