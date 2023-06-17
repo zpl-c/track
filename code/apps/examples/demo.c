@@ -19,7 +19,7 @@ int main() {
     CHECK(track_init("127.0.0.1", "8200"));
 
     char userId[13] = {0};
-    snprintf(userId, 13, "id-%d", rand()%9999);
+    snprintf(userId, 13, "id-%d", rand()%99999);
 
     CHECK(track_ident(userId, "{\\\"demoId\\\": 42, \\\"name\\\": \\\"Jane Doe\\\"}"));
     CHECK(track_event("demo_app opened", userId, "{\\\"foo\\\": 123, \\\"open_timestamp\\\": 123893893}"));
