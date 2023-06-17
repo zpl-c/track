@@ -83,8 +83,7 @@ module.exports = {
 				}
 			}
 			catch (e) {
-				console.log(e)
-				if (module.cb_unknown) module.cb_unknown(msg.toString(), true)
+				if (module.cb_error) module.cb_error(msg.toString())
 			}
 		})
 	},
@@ -117,5 +116,9 @@ module.exports = {
 
 	unknown: cb => {
 		module.cb_unknown = cb
+	},
+
+	error: cb => {
+		module.cb_error = cb
 	}
 }
