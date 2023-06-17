@@ -5,7 +5,7 @@
 <br />
 
 <div align="center">
-    <a href="https://github.com/zpl-c/skeleton/actions"><img src="https://img.shields.io/github/actions/workflow/status/zpl-c/track/tester?label=Tests&style=for-the-badge" alt="Build status" /></a>
+    <a href="https://github.com/zpl-c/skeleton/actions"><img src="https://img.shields.io/github/actions/workflow/status/zpl-c/track/tester.yml?branch=main?label=Tests&style=for-the-badge" alt="Build status" /></a>
     <a href="https://discord.gg/2fZVEym"><img src="https://img.shields.io/discord/354670964400848898?color=7289DA&style=for-the-badge" alt="discord" /></a>
 </div>
 
@@ -23,6 +23,42 @@
 
 # Introduction
 zpl.track is a cross-platform event tracker that can send your event data to a UDP echo server. You can then pipe the telemetry data to any destinations desired. It aims to be very minimalist and easy to integrate.
+
+# How to obtain this library?
+
+There are several options in getting hands-on this library:
+
+## 1. Via CLI (the simplest option)
+```sh
+curl -L https://github.com/zpl-c/track/releases/latest/download/track.h > track.h
+# OR
+wget https://github.com/zpl-c/track/releases/latest/download/track.h -O track.h
+```
+
+This approach will download the latest release of zpl.track with everything prepared for you.
+
+## 2. Via GitHub releases page
+* Navigate to the [releases page](https://github.com/zpl-c/track/releases) of the zpl.track repository and pick the version you want to use. Each release contains the distributed version of zpl.track for you to use easily.
+
+## 3. Cloning the repository
+* Clone the repository by pressing the **Clone or download** button for instructions or use your terminal to clone:
+```sh
+git clone https://github.com/zpl-c/track.git
+```
+
+We use this method to develop zpl.track as it contains all the development sources that are easy to modify and expand, but it is not suitable for use in production.
+
+Please follow the [CONTRIBUTING.md](.github/CONTRIBUTING.md) guide to learn how to contribute to the project.
+
+## Build the demo
+We use CMake to generate project files.
+You can do the following on the command line to create and build this project:
+```sh
+cmake -S misc -B build
+cmake --build build
+```
+
+Run `build/echo` first, then run the compiled `build/demo`.
 
 ## Example code
 
@@ -59,41 +95,6 @@ int main() {
 }
 ```
 
-# How to obtain this library?
-
-There are several options in getting hands-on this library:
-
-## 1. Via CLI (the simplest option)
-```sh
-curl -L https://github.com/zpl-c/track/releases/latest/download/track.h > track.h
-# OR
-wget https://github.com/zpl-c/track/releases/latest/download/track.h -O track.h
-```
-
-This approach will download the latest release of zpl.track with everything prepared for you.
-
-## 2. Via GitHub releases page
-* Navigate to the [releases page](https://github.com/zpl-c/track/releases) of the zpl.track repository and pick the version you want to use. Each release contains the distributed version of zpl.track for you to use easily.
-
-## 3. Cloning the repository
-* Clone the repository by pressing the **Clone or download** button for instructions or use your terminal to clone:
-```sh
-git clone https://github.com/zpl-c/track.git
-```
-
-We use this method to develop zpl.track as it contains all the development sources that are easy to modify and expand, but it is not suitable for use in production.
-
-Please follow the [CONTRIBUTING.md](.github/CONTRIBUTING.md) guide to learn how to contribute to the project.
-
-### Build the demo
-We use CMake to generate project files.
-You can do the following on the command line to create and build this project:
-```sh
-cmake -S misc -B build
-cmake --build build
-```
-
-Run `build/echo` first, then run the compiled `build/demo`.
 
 ## License
 
