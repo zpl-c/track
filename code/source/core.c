@@ -41,7 +41,7 @@ static void track__buffer_flush(void) {
 }
 
 static int track__buffer_appendc(char const *str) {
-    int32_t size = strlen(str);
+    int32_t size = (int32_t)strlen(str);
     if (track__buffer_len+size >= TRACK_SEND_BUFSIZE)
         return -TRACK_ERROR_BUFFER_FULL;
     memcpy(track__buffer+track__buffer_len, str, size);

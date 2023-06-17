@@ -97,6 +97,11 @@ License:
 #define UNIT_DEF
 #endif
 
+// fix vsprintf_s warn
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
