@@ -4,7 +4,7 @@
 
 //~ Options
 #ifndef TRACK_SEND_BUFSIZE
-#define TRACK_SEND_BUFSIZE 577
+#define TRACK_SEND_BUFSIZE 576
 #endif
 
 //~ Errors

@@ -32,7 +32,7 @@ int track_destroy(void) {
 }
 
 //~ Buffer utilities
-static char track__buffer[TRACK_SEND_BUFSIZE];
+static char track__buffer[TRACK_SEND_BUFSIZE+1];
 static int32_t track__buffer_len = 0;
 static int track__errno = 0;
 
@@ -42,7 +42,7 @@ static void track__buffer_flush(void) {
 
 static int track__buffer_appendc(char const *str) {
     int32_t size = (int32_t)strlen(str);
-    if (track__buffer_len+size >= TRACK_SEND_BUFSIZE)
+    if (track__buffer_len+size > TRACK_SEND_BUFSIZE)
         return -TRACK_ERROR_BUFFER_FULL;
     memcpy(track__buffer+track__buffer_len, str, size);
     track__buffer_len += size;
