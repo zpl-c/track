@@ -73,11 +73,11 @@ module.exports = {
 				if (payload.hasOwnProperty('userId') && payload.hasOwnProperty('event') && payload.hasOwnProperty('properties')) {
 					if (module.cb_event) module.cb_event(payload.userId, payload.event, payload.properties, payload)
 				}
-				else if (payload.hasOwnProperty('userId') && payload.hasOwnProperty('traits')) {
-					if (module.cb_ident) module.cb_ident(payload.userId, payload.traits, payload)
-				}
 				else if (payload.hasOwnProperty('userId') && payload.hasOwnProperty('groupId') && payload.hasOwnProperty('traits')) {
 					if (module.cb_group) module.cb_group(payload.userId, payload.groupId, payload.traits, payload)
+				}
+				else if (payload.hasOwnProperty('userId') && payload.hasOwnProperty('traits')) {
+					if (module.cb_ident) module.cb_ident(payload.userId, payload.traits, payload)
 				} else {
 					if (module.cb_unknown) module.cb_unknown(payload)
 				}
